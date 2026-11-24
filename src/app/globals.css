@@ -1,0 +1,414 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BRAND CONSTANTS  (never change, never theme-swap)
+   #0014bd  Volt Blue   — dominant accent
+   #e9e9e9  Cloud Ash   — base neutral
+   #000000  Deep Void   — base dark
+   #dbff00  Neon Beam   — narrow accent
+   ============================================================ */
+:root {
+  --brand-volt:   #0014bd;
+  --brand-ash:    #e9e9e9;
+  --brand-void:   #000000;
+  --brand-neon:   #dbff00;
+}
+
+/* ============================================================
+   SEMANTIC DESIGN TOKENS  — DARK (default)
+   Every token used by components MUST come from here.
+   ============================================================ */
+:root {
+  /* ── Backgrounds ── */
+  --bg-page:        #000000;          /* html / body canvas             */
+  --bg-card:        #0d0d0d;          /* Card, PanelCard, dropdowns     */
+  --bg-card-alt:    #111111;          /* slightly lifted card           */
+  --bg-surface:     rgba(233,233,233,0.06);  /* input, row, inner tile  */
+  --bg-surface-2:   rgba(233,233,233,0.03);  /* alternate row stripe    */
+  --bg-surface-hover: rgba(233,233,233,0.09);
+  --bg-overlay:     rgba(0,0,0,0.72); /* modal / drawer backdrop        */
+
+  /* ── Borders ── */
+  --border-default: rgba(233,233,233,0.11);
+  --border-strong:  rgba(233,233,233,0.18);
+  --border-accent:  rgba(0,20,189,0.4);
+
+  /* ── Text hierarchy ── */
+  --text-primary:   #e9e9e9;          /* headings, values, names        */
+  --text-secondary: rgba(233,233,233,0.60); /* sub-labels, metadata     */
+  --text-muted:     rgba(233,233,233,0.38); /* hints, placeholders      */
+  --text-disabled:  rgba(233,233,233,0.22);
+  --text-on-volt:   #ffffff;          /* text sitting on volt-blue fill */
+  --text-on-neon:   #000000;          /* text sitting on neon-beam fill */
+
+  /* ── Accent (Volt Blue) ── */
+  --accent:         #0014bd;
+  --accent-subtle:  rgba(0,20,189,0.18);
+  --accent-border:  rgba(0,20,189,0.40);
+  --accent-hover:   rgba(0,20,189,0.28);
+
+  /* ── Neon (narrow accent only) ── */
+  --neon:           #dbff00;
+  --neon-subtle:    rgba(219,255,0,0.12);
+  --neon-border:    rgba(219,255,0,0.28);
+  --neon-text:      rgba(219,255,0,0.80); /* neon as text — only on dark bg */
+
+  /* ── Status ── */
+  --status-success-bg:   rgba(0,20,189,0.20);
+  --status-success-text: #e9e9e9;
+  --status-warn-bg:      rgba(0,20,189,0.14);
+  --status-warn-text:    rgba(233,233,233,0.80);
+  --status-danger-bg:    rgba(219,255,0,0.08);
+  --status-danger-text:  rgba(219,255,0,0.90);
+  --status-info-bg:      rgba(233,233,233,0.07);
+  --status-info-text:    rgba(233,233,233,0.72);
+
+  /* ── Interactive delete / destructive ── */
+  --destructive:         rgba(233,233,233,0.28);
+  --destructive-hover:   rgba(233,233,233,0.80);
+
+  /* ── Progress track ── */
+  --progress-track:      rgba(233,233,233,0.10);
+
+  /* ── Shadows ── */
+  --shadow-card:    0 2px 16px rgba(0,0,0,0.50);
+  --shadow-dropdown:0 12px 32px rgba(0,0,0,0.75);
+  --shadow-sm:      0 1px 6px  rgba(0,0,0,0.40);
+
+  /* ── Misc legacy aliases (keep so old var() refs don't break) ── */
+  --color-volt-blue:   var(--accent);
+  --color-cloud-ash:   var(--text-primary);
+  --color-deep-void:   var(--bg-page);
+  --color-neon-beam:   var(--neon);
+  --color-card:        var(--bg-card);
+  --color-border:      var(--border-default);
+  --color-surface:     var(--bg-surface);
+  --color-muted:       var(--text-secondary);
+  --color-muted-dim:   var(--text-muted);
+  --color-light:       var(--bg-surface);
+  --color-beam-fade:   rgba(219,255,0,0.45);
+  --color-beam-fade-3: var(--accent-subtle);
+  --color-beam-fade-4: rgba(233,233,233,0.09);
+
+  /* ── Layout ── */
+  --sidebar-w:    240px;
+  --topbar-h:     56px;
+  --bottom-nav-h: 62px;
+}
+
+/* ============================================================
+   SEMANTIC DESIGN TOKENS  — LIGHT  [data-theme="light"]
+   ============================================================ */
+[data-theme="light"] {
+  --bg-page:        #e8e8e8;
+  --bg-card:        #f5f5f5;
+  --bg-card-alt:    #efefef;
+  --bg-surface:     rgba(0,0,0,0.055);
+  --bg-surface-2:   rgba(0,0,0,0.028);
+  --bg-surface-hover: rgba(0,0,0,0.085);
+  --bg-overlay:     rgba(0,0,0,0.55);
+
+  --border-default: rgba(0,0,0,0.11);
+  --border-strong:  rgba(0,0,0,0.18);
+  --border-accent:  rgba(0,20,189,0.35);
+
+  --text-primary:   #0a0a0a;
+  --text-secondary: rgba(0,0,0,0.58);
+  --text-muted:     rgba(0,0,0,0.48);
+  --text-disabled:  rgba(0,0,0,0.30);
+  --text-on-volt:   #ffffff;
+  --text-on-neon:   #000000;
+
+  --accent:         #0014bd;
+  --accent-subtle:  rgba(0,20,189,0.10);
+  --accent-border:  rgba(0,20,189,0.30);
+  --accent-hover:   rgba(0,20,189,0.16);
+
+  --neon:           #bcd600;         /* slightly darker so it's readable on light */
+  --neon-subtle:    rgba(188,214,0,0.14);
+  --neon-border:    rgba(188,214,0,0.35);
+  --neon-text:      #666600;         /* dark olive — legible on white/light surfaces */
+
+  --status-success-bg:   rgba(0,20,189,0.10);
+  --status-success-text: #0a0a0a;
+  --status-warn-bg:      rgba(0,20,189,0.08);
+  --status-warn-text:    rgba(0,0,0,0.75);
+  --status-danger-bg:    rgba(188,214,0,0.12);
+  --status-danger-text:  #555500;
+  --status-info-bg:      rgba(0,0,0,0.05);
+  --status-info-text:    rgba(0,0,0,0.65);
+
+  --destructive:         rgba(0,0,0,0.25);
+  --destructive-hover:   #990000;
+
+  --progress-track:      rgba(0,0,0,0.10);
+
+  --shadow-card:    0 1px 8px  rgba(0,0,0,0.12);
+  --shadow-dropdown:0 8px 24px rgba(0,0,0,0.18);
+  --shadow-sm:      0 1px 4px  rgba(0,0,0,0.10);
+
+  /* legacy aliases */
+  --color-volt-blue:   var(--accent);
+  --color-cloud-ash:   var(--text-primary);
+  --color-deep-void:   var(--bg-page);
+  --color-neon-beam:   var(--neon);
+  --color-card:        var(--bg-card);
+  --color-border:      var(--border-default);
+  --color-surface:     var(--bg-surface);
+  --color-muted:       var(--text-secondary);
+  --color-muted-dim:   var(--text-muted);
+  --color-light:       var(--bg-surface);
+  --color-beam-fade:   rgba(188,214,0,0.45);
+  --color-beam-fade-3: var(--accent-subtle);
+  --color-beam-fade-4: rgba(0,0,0,0.07);
+}
+
+/* ============================================================
+   GLOBAL RESETS & BASE STYLES
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+input, select, textarea, button { font-family: inherit; }
+
+/* Date input: invert arrow in dark, normal in light */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.55;
+}
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+  opacity: 0.45;
+}
+
+/* ---- Tabular numerals ---- */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   CARD PADDING
+   ============================================================ */
+.card-header-pad { padding: 1rem 1rem 0.875rem; }
+.card-body-pad   { padding: 1rem; }
+@media (min-width: 480px) {
+  .card-header-pad { padding: 1.25rem 1.375rem 1rem; }
+  .card-body-pad   { padding: 1.25rem 1.375rem; }
+}
+@media (min-width: 768px) {
+  .card-header-pad { padding: 1.25rem 1.5rem 1rem; }
+  .card-body-pad   { padding: 1.25rem 1.5rem; }
+}
+
+/* ============================================================
+   TABLE SCROLL
+   ============================================================ */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-left: -1rem; margin-right: -1rem;
+  padding-left: 1rem; padding-right: 1rem;
+  max-width: calc(100% + 2rem);
+}
+@media (min-width: 480px) {
+  .table-scroll {
+    margin-left: -1.375rem; margin-right: -1.375rem;
+    padding-left: 1.375rem; padding-right: 1.375rem;
+    max-width: calc(100% + 2.75rem);
+  }
+}
+@media (min-width: 768px) {
+  .table-scroll {
+    margin-left: -1.5rem; margin-right: -1.5rem;
+    padding-left: 1.5rem; padding-right: 1.5rem;
+    max-width: calc(100% + 3rem);
+  }
+}
+
+/* Mobile/Desktop table toggle */
+.mobile-card-list { display: flex; flex-direction: column; gap: 0.625rem; }
+.table-desktop    { display: none; }
+@media (min-width: 640px) {
+  .mobile-card-list { display: none; }
+  .table-desktop    { display: block; }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ---- Focus rings ---- */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- Animations ---- */
+.animate-fade-in { animation: fadeIn 0.25s ease both; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Shimmer skeleton ---- */
+@keyframes shimmer {
+  from { background-position: -600px 0; }
+  to   { background-position:  600px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--bg-surface)   25%,
+    var(--bg-surface-hover) 50%,
+    var(--bg-surface)   75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 0.5rem;
+}
+
+/* ============================================================
+   LAYOUT SYSTEM
+   ============================================================ */
+
+/* ── Sidebar overlay backdrop ── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg-overlay);
+  z-index: 39;
+  animation: fadeIn 0.2s ease;
+}
+.sidebar-backdrop.open { display: block; }
+
+/* ── Sidebar drawer ── */
+.sidebar-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100dvh;
+  width: var(--sidebar-w);
+  background-color: var(--bg-card);
+  border-left: 1px solid var(--border-default);
+  display: flex; flex-direction: column;
+  z-index: 40;
+  user-select: none;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), background-color 0.2s;
+}
+.sidebar-drawer.open { transform: translateX(0); }
+@media (min-width: 1024px) {
+  .sidebar-drawer { transform: translateX(0) !important; transition: background-color 0.2s; }
+  .sidebar-backdrop { display: none !important; }
+}
+
+/* ── Mobile top bar ── */
+.mobile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: var(--topbar-h);
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-default);
+  position: sticky; top: 0; z-index: 30;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+@media (min-width: 1024px) { .mobile-topbar { display: none; } }
+
+/* ── Page shell ── */
+.page-shell { display: flex; flex-direction: column; min-height: 100dvh; overflow-x: hidden; }
+
+/* ── Main content ── */
+.main-content {
+  flex: 1; min-width: 0;
+  padding: 1.25rem 1rem 3rem;
+  padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 1.5rem);
+}
+@media (min-width: 1024px) {
+  .main-content {
+    margin-right: var(--sidebar-w);
+    padding: 2rem 2rem 3rem;
+    padding-bottom: 3rem;
+  }
+}
+.main-inner { max-width: 1280px; margin: 0 auto; width: 100%; }
+
+/* ============================================================
+   RESPONSIVE GRID HELPERS
+   ============================================================ */
+.grid-kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+@media (min-width: 1024px) { .grid-kpi { grid-template-columns: repeat(4,1fr); gap: 1rem; } }
+
+.grid-2col { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+@media (min-width: 768px) { .grid-2col { grid-template-columns: 1fr 1fr; } }
+
+.grid-3col { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 640px)  { .grid-3col { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .grid-3col { grid-template-columns: repeat(3,1fr); } }
+
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 580px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+.min-w-0  { min-width: 0; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tap-target {
+  min-height: 44px; min-width: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Theme-aware utility fills */
+.bg-volt   { background-color: var(--accent)    !important; }
+.bg-void   { background-color: var(--bg-page)   !important; }
+.bg-cloud  { background-color: var(--text-primary) !important; }
+.bg-neon   { background-color: var(--neon)       !important; }
+.text-volt { color: var(--accent)    !important; }
+.text-void { color: var(--bg-page)   !important; }
+.text-cloud{ color: var(--text-primary) !important; }
+.text-neon { color: var(--neon-text)  !important; }
+
+/* Show/hide helpers */
+.lg-hidden { display: flex; }
+@media (min-width: 1024px) { .lg-hidden { display: none !important; } }
+
+.mobile-hidden { display: none; }
+@media (min-width: 1024px) { .mobile-hidden { display: flex; } }
+
+/* Bottom navigation — mobile only */
+.bottom-nav { display: flex; }
+@media (min-width: 1024px) {
+  .bottom-nav,
+  .bottom-nav ~ * { display: none !important; }
+}
+
+@media (max-width: 1023px) {
+  .mobile-topbar .tap-target { opacity: 0.75; }
+}
+
+/* Finance tab strip wrapper — theme-aware background */
+.tab-strip-bg {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+}
+
+/* Theme transition — smooth across all surfaces */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.18s;
+  transition-timing-function: ease;
+}
+/* Exclude transitions on animations and transforms to avoid jank */
+.animate-fade-in, .skeleton { transition: none; }

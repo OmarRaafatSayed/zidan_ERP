@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Branch {
+  id            Int            @id @default(autoincrement())
+  name          String         // e.g. "فرع 2006", "فرع 2007"
+  year          String?        // e.g. "2006"
+  createdAt     DateTime       @default(now())
+  subscriptions Subscription[]
+  checkIns      CheckIn[]
+  monthlyGoals  MonthlyGoal[]
+}
+
+model Player {
+  id            Int            @id @default(autoincrement())
+  name          String
+  phone         String?        @unique
+  email         String?
+  birthDate     DateTime?
+  notes         String?
+  createdAt     DateTime       @default(now())
+  subscriptions Subscription[]
+  checkIns      CheckIn[]
+}
+
+model Visitor {
+  id           Int       @id @default(autoincrement())
+  name         String
+  phone        String?
+  source       String?   // e.g. "حملة تسويقية", "دعوة عضو"
+  referredBy   String?   // اسم العضو الداعي
+  notes        String?
+  visitDate    DateTime  @default(now())
+  converted    Boolean   @default(false)
+  subscription Subscription?
+  createdAt    DateTime  @default(now())
+}
+
+model Subscription {
+  id          Int       @id @default(autoincrement())
+  player      Player    @relation(fields: [playerId], references: [id])
+  playerId    Int
+  branch      Branch    @relation(fields: [branchId], references: [id])
+  branchId    Int
+  visitor     Visitor?  @relation(fields: [visitorId], references: [id])
+  visitorId   Int?      @unique
+  amount      Float
+  startDate   DateTime
+  endDate     DateTime
+  sessionType String?   // e.g. "صباحي", "مسائي"
+  status      String    @default("active") // active, expired, cancelled
+  notes       String?
+  createdAt   DateTime  @default(now())
+}
+
+model CheckIn {
+  id        Int      @id @default(autoincrement())
+  player    Player   @relation(fields: [playerId], references: [id])
+  playerId  Int
+  branch    Branch   @relation(fields: [branchId], references: [id])
+  branchId  Int
+  checkInAt DateTime @default(now())
+  notes     String?
+}
+
+model Coach {
+  id          Int           @id @default(autoincrement())
+  name        String
+  phone       String?
+  baseSalary  Float
+  bonusRate   Float         @default(0) // نسبة البونص من الراتب (0-1)
+  createdAt   DateTime      @default(now())
+  salaries    CoachSalary[]
+}
+
+model CoachSalary {
+  id          Int      @id @default(autoincrement())
+  coach       Coach    @relation(fields: [coachId], references: [id])
+  coachId     Int
+  month       Int      // 1-12
+  year        Int
+  baseSalary  Float
+  bonusAmount Float    @default(0)
+  totalPaid   Float
+  paid        Boolean  @default(false)
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+model MonthlyGoal {
+  id          Int      @id @default(autoincrement())
+  branch      Branch   @relation(fields: [branchId], references: [id])
+  branchId    Int
+  month       Int
+  year        Int
+  targetCount Int      // الهدف المستهدف
+  createdAt   DateTime @default(now())
+}
+
+model ExpenseItem {
+  id          Int      @id @default(autoincrement())
+  name        String   // e.g. "إيجار", "كهرباء"
+  percentage  Float?   // نسبة من الدخل الأساسي (nullable if fixed)
+  fixedAmount Float?   // مبلغ ثابت (nullable if percentage)
+  month       Int
+  year        Int
+  isCore      Boolean  @default(true) // core = from subscription income base
+  createdAt   DateTime @default(now())
+}
+
+model SideIncome {
+  id          Int      @id @default(autoincrement())
+  description String   // e.g. "بيع شنط", "تست", "كامب سفر"
+  amount      Float
+  date        DateTime @default(now())
+  month       Int
+  year        Int
+  createdAt   DateTime @default(now())
+}
